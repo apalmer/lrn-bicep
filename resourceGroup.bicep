@@ -32,3 +32,42 @@ module acModule 'appconfiguration.bicep' = {
     keyVault: kvModule.outputs.keyVaultName
   }
 }
+
+module aiModule 'applicationInsights.bicep' = {
+  scope: apcoResourceGroup
+  name: 'aiDeploy'
+  params: {
+    tenantId: tenantId
+    location: location
+    stage: stage
+    instance: instance
+  }
+}
+
+module sfModule 'serverFarm.bicep' = {
+  scope: apcoResourceGroup
+  name: 'sfDeploy'
+  params: {
+    tenantId: tenantId
+    location: location
+    stage: stage
+    instance: instance
+  }
+}
+
+module afTestModule 'azureFunction.bicep' = {
+  scope: apcoResourceGroup
+  name: 'afTestDeploy'
+  params: {
+    tenantId: tenantId
+    location: location
+    stage: stage
+    instance: instance
+    serverFarmId: sfModule.outputs.serverFarmId
+    appInsightsInstrumentationKey: aiModule.outputs.appInsightsInstrumentationKey
+    keyVaultName: kvModule.outputs.keyVaultName
+    appConfigName: acModule.outputs.AppConfigName
+    appConfigId: acModule.outputs.AppConfigId
+    appConfigEndpoint: acModule.outputs.AppConfigEndpoint
+  }
+}
