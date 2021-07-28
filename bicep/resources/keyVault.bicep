@@ -30,4 +30,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   }
 }
 
+resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets' = {
+  name: '${keyVault.name}/testKeyVaultSecret'
+  location: location
+  properties: {
+    value: newGuid()
+  }
+}
+
 output keyVaultName string = keyVault.name
