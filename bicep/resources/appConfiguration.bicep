@@ -2,8 +2,8 @@ param location string = resourceGroup().location
 param stage string = 'dev'
 param instance string = 'a'
 param tenantId string = subscription().tenantId
-
 param keyVault string = 'kv-gs-${stage}-${instance}'
+param adminUser = ''
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-03-01-preview' = {
   name: 'ac-gs-${stage}-${instance}'
@@ -31,7 +31,6 @@ resource acTestConfigValue 'Microsoft.AppConfiguration/configurationStores/keyVa
 //   }
 // }
 
-var adminUser = '1a9ce792-c5d9-4740-87c1-49e6acecf490'
 var appConfigDataReaderRoleId = '${subscription().id}/providers/Microsoft.Authorization/roleDefinitions/516239f1-63e1-4d78-a4de-a74fb236a071'
 resource appConfigRoleAssignment 'Microsoft.AppConfiguration/configurationStores/providers/roleAssignments@2018-01-01-preview' = {
   name: '${appConfiguration.name}/Microsoft.Authorization/${guid(uniqueString(appConfiguration.name,adminUser,appConfigDataReaderRoleId))}'

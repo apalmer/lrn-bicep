@@ -4,6 +4,7 @@ param location string = deployment().location
 param stage string = 'dev'
 param instance string = 'a'
 param tenantId string = subscription().tenantId
+param adminUser string = '1a9ce792-c5d9-4740-87c1-49e6acecf490'
 
 resource gsResourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01'= {
   name: 'rg-gs-${stage}-${instance}'
@@ -18,6 +19,7 @@ module kvModule 'resources/keyvault.bicep' = {
     location: location
     stage: stage
     instance: instance
+    adminUser: adminUser
   }
 }
 
@@ -30,6 +32,7 @@ module acModule 'resources/appconfiguration.bicep' = {
     stage: stage
     instance: instance
     keyVault: kvModule.outputs.keyVaultName
+    adminUser: adminUser
   }
 }
 
