@@ -2,7 +2,7 @@ param location string = resourceGroup().location
 param stage string = 'dev'
 param instance string = 'a'
 param tenantId string = subscription().tenantId
-param adminUser = ''
+param adminUser string = ''
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: 'kv-gs-${stage}-${instance}'
@@ -30,12 +30,12 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
   }
 }
 
-resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets' = {
+resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = {
   name: '${keyVault.name}/testKeyVaultSecret'
-  location: location
   properties: {
-    value: newGuid()
+    value: 'keyvault secret'
   }
 }
 
 output keyVaultName string = keyVault.name
+output keyVaultSecretUri string = keyVaultSecret.properties.secretUri

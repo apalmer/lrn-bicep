@@ -2,8 +2,8 @@ param location string = resourceGroup().location
 param stage string = 'dev'
 param instance string = 'a'
 param tenantId string = subscription().tenantId
-param keyVault string = 'kv-gs-${stage}-${instance}'
-param adminUser = ''
+param keyVault string = ''
+param adminUser string = ''
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-03-01-preview' = {
   name: 'ac-gs-${stage}-${instance}'

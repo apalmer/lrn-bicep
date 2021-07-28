@@ -11,7 +11,7 @@ resource gsResourceGroup 'Microsoft.Resources/resourceGroups@2021-01-01'= {
   location: location
 }
 
-module kvModule 'resources/keyvault.bicep' = {
+module kvModule 'resources/keyVault.bicep' = {
   scope: gsResourceGroup
   name: 'kvDeploy'
   params: {
