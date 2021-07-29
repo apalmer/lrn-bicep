@@ -32,6 +32,7 @@ module acModule 'resources/appconfiguration.bicep' = {
     stage: stage
     instance: instance
     keyVault: kvModule.outputs.keyVaultName
+    keyVaultSecretUri: kvModule.outputs.keyVaultSecretUri
     adminUser: adminUser
   }
 }
