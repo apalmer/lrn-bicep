@@ -32,11 +32,11 @@ resource azureFunction 'Microsoft.Web/sites@2020-12-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsDashboard'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageaccount.name};AccountKey=${listKeys('${storageaccount.id}', '2019-06-01').keys[0]}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageaccount.name};AccountKey=${listKeys('${storageaccount.id}', '2019-06-01').keys[0].value}'
         }
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageaccount.name};AccountKey=${listKeys('${storageaccount.id}', '2019-06-01').keys[0]}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageaccount.name};AccountKey=${listKeys('${storageaccount.id}', '2019-06-01').keys[0].value}'
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'

@@ -4,6 +4,7 @@ param instance string = 'a'
 param tenantId string = subscription().tenantId
 param keyVault string = ''
 param adminUser string = ''
+param now string = utcNow()
 
 resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-03-01-preview' = {
   name: 'ac-gs-${stage}-${instance}'
@@ -22,6 +23,14 @@ resource acTestConfigValue 'Microsoft.AppConfiguration/configurationStores/keyVa
   }
 }
 
+resource acTestSentinel 'Microsoft.AppConfiguration/configurationStores/keyValues@2020-07-01-preview' = {
+  parent: appConfiguration
+  name: 'gs:sentinel'
+  properties: {
+    value: now
+    contentType: 'application/text'
+  }
+}
 // resource acTestSecret 'Microsoft.AppConfiguration/configurationStores/keyValues@2020-07-01-preview' = {
 //   parent: appConfiguration
 //   name: 'gs:keyvaultsecret'
