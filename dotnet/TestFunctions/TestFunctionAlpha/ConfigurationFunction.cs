@@ -8,16 +8,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using Microsoft.FeatureManagement;
 
 namespace TestFunctionAlpha
 {
     public class ConfigurationFunction
     {
         private readonly IConfiguration _configuration;
+        private readonly IConfigurationRefresher _configurationRefresher;
+        private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
 
-        public ConfigurationFunction(IConfiguration configuration)
+        public ConfigurationFunction(IConfiguration configuration, IConfigurationRefresherProvider refresherProvider, IFeatureManagerSnapshot featureManagerSnapshot)
         {
             _configuration = configuration;
+            _configurationRefresher = refresherProvider.Refreshers.First();
+            _featureManagerSnapshot = featureManagerSnapshot;
         }
 
         [FunctionName("GetConfiguration")]
@@ -27,9 +34,18 @@ namespace TestFunctionAlpha
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var configValue = _configuration["test:apco:configvalue"];
+            await _configurationRefresher.TryRefreshAsync();
 
-            string responseMessage = $"Azure App Configuration Value: {configValue}";
+            var configValue = _configuration["gs:configvalue"];
+            var keyVaultRefValue = _configuration["gs:keyvaultref"];
+
+            string responseMessage = $"Azure App Configuration Value: {configValue}\n";
+            responseMessage += $"Key Vault Reference Value: {keyVaultRefValue}\n";
+
+            if(await _featureManagerSnapshot.IsEnabledAsync("gs-feature-alpha"))
+            {
+                responseMessage += "Feature Alpha Enabled\n";
+            }
 
             return new OkObjectResult(responseMessage);
         }
