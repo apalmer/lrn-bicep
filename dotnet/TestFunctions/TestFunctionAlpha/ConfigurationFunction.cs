@@ -42,7 +42,7 @@ namespace TestFunctionAlpha
             string responseMessage = $"Azure App Configuration Value: {configValue}\n";
             responseMessage += $"Key Vault Reference Value: {keyVaultRefValue}\n";
 
-            if(await _featureManagerSnapshot.IsEnabledAsync("gs-feature-alpha"))
+            if(await _featureManagerSnapshot.IsEnabledAsync("gs-feature-flag"))
             {
                 responseMessage += "Feature Alpha Enabled\n";
             }

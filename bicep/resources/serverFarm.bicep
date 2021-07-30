@@ -1,7 +1,6 @@
 param location string = resourceGroup().location
 param stage string = 'dev'
 param instance string = 'a'
-param tenantId string = subscription().tenantId
 
 resource serverFarm 'Microsoft.Web/serverfarms@2021-01-15' = {
   name: 'sf-${stage}-${instance}'
